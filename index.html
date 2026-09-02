@@ -454,6 +454,10 @@
     </div>
   </div>
 
+  <audio id="laguUlangTahun" loop>
+    <source src="audio/lagu.mp3" type="audio/mpeg" />
+  </audio>
+
   <div class="popup" id="openGiftPopup">
     <div class="popup-card">
       <h3>Yuk, buka hadiahnya?</h3>
@@ -473,6 +477,7 @@
     const cancelGift = document.getElementById("cancelGift");
     const gallery = document.getElementById("gallery");
     const pesan = document.getElementById("pesanMuncul");
+    const laguUlangTahun = document.getElementById("laguUlangTahun");
 
     let noInterval = null;
 
@@ -538,6 +543,7 @@
 
     mainGiftBtn.addEventListener("click", () => {
       openGiftPopup.classList.add("show");
+      laguUlangTahun.play();
       moveNoButtonRandomly();
       startNoEscape();
     });
