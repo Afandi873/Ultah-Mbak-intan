@@ -292,6 +292,69 @@
       100% { transform: translateY(110vh) rotate(540deg); opacity: 0; }
     }
 
+    .balloon {
+      position: fixed;
+      bottom: -90px;
+      z-index: 4;
+      font-size: 44px;
+      pointer-events: none;
+      animation: balloonRise 5.5s ease-in forwards;
+    }
+
+    @keyframes balloonRise {
+      0% { transform: translateY(0) rotate(-8deg); opacity: 0; }
+      12% { opacity: 1; }
+      50% { transform: translateY(-55vh) translateX(25px) rotate(8deg); }
+      100% { transform: translateY(-125vh) translateX(-35px) rotate(-12deg); opacity: 0; }
+    }
+
+    .celebration-note {
+      position: fixed;
+      z-index: 12;
+      color: #fff;
+      font-size: clamp(1rem, 3vw, 1.6rem);
+      font-weight: 800;
+      text-shadow: 0 2px 5px rgba(95, 45, 80, 0.35);
+      pointer-events: none;
+      animation: notePop 2.8s ease-out forwards;
+    }
+
+    @keyframes notePop {
+      0% { transform: translateY(20px) scale(0.5) rotate(-8deg); opacity: 0; }
+      18% { transform: translateY(0) scale(1.05) rotate(4deg); opacity: 1; }
+      75% { opacity: 1; }
+      100% { transform: translateY(-85px) scale(0.9) rotate(-5deg); opacity: 0; }
+    }
+
+    .firework {
+      position: fixed;
+      width: 16px;
+      height: 16px;
+      z-index: 11;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, #fff 0 12%, #ffd54a 20%, transparent 68%);
+      animation: fireworkBurst 1.1s ease-out forwards;
+    }
+
+    @keyframes fireworkBurst {
+      0% { transform: scale(0.2); opacity: 0; box-shadow: none; }
+      25% { opacity: 1; }
+      100% {
+        transform: scale(1.15);
+        opacity: 0;
+        box-shadow:
+          0 -58px 0 -5px #ff4d79,
+          41px -41px 0 -5px #7bdff2,
+          58px 0 0 -5px #ffca3a,
+          41px 41px 0 -5px #7ae582,
+          0 58px 0 -5px #b892ff,
+          -41px 41px 0 -5px #ff9f1c,
+          -58px 0 0 -5px #ff7b8f,
+          -41px -41px 0 -5px #4cc9a3;
+      }
+    }
+
     .popup {
       position: fixed;
       inset: 0;
@@ -325,6 +388,42 @@
 
     .popup.show .popup-card {
       transform: translateY(0) scale(1);
+    }
+
+    .info-popup-card {
+      position: relative;
+      width: min(90vw, 430px);
+      background: linear-gradient(135deg, #fff8d6, #ffe4ef);
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+      padding: 30px 22px 24px;
+      box-shadow: 0 18px 45px rgba(255, 77, 121, 0.28);
+      text-align: center;
+      transform: translateY(20px) scale(0.94) rotate(-2deg);
+      transition: transform 0.3s ease;
+    }
+
+    .popup.show .info-popup-card {
+      transform: translateY(0) scale(1) rotate(0deg);
+    }
+
+    .info-popup-card .popup-emoji {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 3rem;
+      animation: bounce 1s infinite ease-in-out;
+    }
+
+    .info-popup-card h3 {
+      margin: 0 0 10px;
+      color: #ff4d79;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+    }
+
+    .info-popup-card p {
+      margin: 0 0 18px;
+      color: #805568;
+      font-weight: 700;
     }
 
     .popup-card h3 {
@@ -428,28 +527,24 @@
         <div class="photo-wrap">
           <img class="photo" src="image/Foto1.jpg.jpeg" alt="Foto 1" />
         </div>
-        <div class="caption">Moment 1</div>
       </div>
 
       <div class="frame">
         <div class="photo-wrap">
           <img class="photo" src="image/Foto2.jpg.jpeg" alt="Foto 2" />
         </div>
-        <div class="caption">Moment 2</div>
       </div>
 
       <div class="frame">
         <div class="photo-wrap">
           <img class="photo" src="image/Foto3.jpg.jpeg" alt="Foto 3" />
         </div>
-        <div class="caption">Moment 3</div>
       </div>
 
       <div class="frame">
         <div class="photo-wrap">
           <img class="photo" src="image/Foto4.jpg.jpeg" alt="Foto 4" />
         </div>
-        <div class="caption">Moment 4</div>
       </div>
     </div>
   </div>
@@ -470,16 +565,28 @@
     </div>
   </div>
 
+  <div class="popup" id="alreadyOpenedPopup">
+    <div class="info-popup-card">
+      <span class="popup-emoji">😆🎁</span>
+      <h3>Udaaahh mauu apaaa lagiiii?</h3>
+      <p>Hadiah ulang tahunnya sudah dibuka semuaa yaa!</p>
+      <button class="popup-btn yes" id="closeAlreadyOpened">Hehe iyaaa</button>
+    </div>
+  </div>
+
   <script>
     const mainGiftBtn = document.getElementById("mainGiftBtn");
     const openGiftPopup = document.getElementById("openGiftPopup");
     const acceptGift = document.getElementById("acceptGift");
     const cancelGift = document.getElementById("cancelGift");
+    const alreadyOpenedPopup = document.getElementById("alreadyOpenedPopup");
+    const closeAlreadyOpened = document.getElementById("closeAlreadyOpened");
     const gallery = document.getElementById("gallery");
     const pesan = document.getElementById("pesanMuncul");
     const laguUlangTahun = document.getElementById("laguUlangTahun");
 
     let noInterval = null;
+    let celebrationStarted = false;
 
     function moveNoButtonRandomly() {
       const card = document.querySelector(".popup-card");
@@ -541,22 +648,77 @@
       }
     }
 
+    function buatBalon() {
+      const balon = ["🎈", "🎈", "🎈", "🎉", "🎈", "🎈", "🎈", "🎈"];
+      balon.forEach((emoji, index) => {
+        const balloon = document.createElement("div");
+        balloon.className = "balloon";
+        balloon.textContent = emoji;
+        balloon.style.left = `${8 + Math.random() * 84}%`;
+        balloon.style.animationDelay = `${index * 0.22}s`;
+        balloon.style.animationDuration = `${4.8 + Math.random() * 1.8}s`;
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 7500);
+      });
+    }
+
+    function buatUcapan() {
+      ["Yey! 🎉", "Horeee! 🎂", "Mbak Intan! 💖", "Bahagia selalu! ✨"].forEach((text, index) => {
+        setTimeout(() => {
+          const note = document.createElement("div");
+          note.className = "celebration-note";
+          note.textContent = text;
+          note.style.left = `${12 + Math.random() * 68}%`;
+          note.style.top = `${18 + Math.random() * 52}%`;
+          document.body.appendChild(note);
+          setTimeout(() => note.remove(), 3000);
+        }, index * 350);
+      });
+    }
+
+    function buatKembangApi() {
+      for (let i = 0; i < 8; i++) {
+        setTimeout(() => {
+          const firework = document.createElement("div");
+          firework.className = "firework";
+          firework.style.left = `${15 + Math.random() * 70}%`;
+          firework.style.top = `${12 + Math.random() * 48}%`;
+          document.body.appendChild(firework);
+          setTimeout(() => firework.remove(), 1200);
+        }, i * 180);
+      }
+    }
+
     mainGiftBtn.addEventListener("click", () => {
+      if (celebrationStarted) {
+        alreadyOpenedPopup.classList.add("show");
+        return;
+      }
+
       openGiftPopup.classList.add("show");
-      laguUlangTahun.currentTime = 79;
-      laguUlangTahun.play();
       moveNoButtonRandomly();
       startNoEscape();
     });
 
+    closeAlreadyOpened.addEventListener("click", () => {
+      alreadyOpenedPopup.classList.remove("show");
+    });
+
     acceptGift.addEventListener("click", () => {
+      if (celebrationStarted) return;
+      celebrationStarted = true;
       openGiftPopup.classList.remove("show");
       stopNoEscape();
 
       gallery.classList.add("show");
       pesan.classList.add("show");
+      laguUlangTahun.currentTime = 80;
+      laguUlangTahun.play();
       buatConfetti();
       buatSparkle();
+      buatBalon();
+      buatUcapan();
+      buatKembangApi();
 
       mainGiftBtn.textContent = "Hadiah Sudah Dibuka";
     });
