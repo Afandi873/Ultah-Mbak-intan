@@ -167,7 +167,7 @@
 
     .gallery {
       display: grid;
-      grid-template-columns: repeat(2, minmax(200px, 1fr));
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
       gap: 26px;
       opacity: 0;
       transform: translateY(20px);
@@ -525,25 +525,43 @@
     <div class="gallery" id="gallery">
       <div class="frame">
         <div class="photo-wrap">
-          <img class="photo" src="image/Foto1.jpg.jpeg" alt="Foto 1" />
+          <img class="photo" src="Foto1.jpg.jpeg" alt="Foto 1" />
         </div>
       </div>
 
       <div class="frame">
         <div class="photo-wrap">
-          <img class="photo" src="image/Foto2.jpg.jpeg" alt="Foto 2" />
+          <img class="photo" src="Foto2.jpg.jpeg" alt="Foto 2" />
         </div>
       </div>
 
       <div class="frame">
         <div class="photo-wrap">
-          <img class="photo" src="image/Foto3.jpg.jpeg" alt="Foto 3" />
+          <img class="photo" src="Foto3.jpg.jpeg" alt="Foto 3" />
         </div>
       </div>
 
       <div class="frame">
         <div class="photo-wrap">
-          <img class="photo" src="image/Foto4.jpg.jpeg" alt="Foto 4" />
+          <img class="photo" src="Foto4.jpg.jpeg" alt="Foto 4" />
+        </div>
+      </div>
+
+      <div class="frame">
+        <div class="photo-wrap">
+          <img class="photo" src="Foto5.jpg.jpeg" alt="Foto 5" />
+        </div>
+      </div>
+
+      <div class="frame">
+        <div class="photo-wrap">
+          <img class="photo" src="foto6.jpg.jpeg" alt="Foto 6" />
+        </div>
+      </div>
+
+      <div class="frame">
+        <div class="photo-wrap">
+          <img class="photo" src="Foto7.jpg.jpeg" alt="Foto 7" />
         </div>
       </div>
     </div>
@@ -555,7 +573,7 @@
 
   <div class="popup" id="openGiftPopup">
     <div class="popup-card">
-      <h3>Yuk, buka hadiahnya?</h3>
+      <h3>Yuk, buka hadiahnyaa!</h3>
       <p>tapi transfer dek afan dulu yaa hehe.</p>
 
       <div class="popup-actions">
@@ -705,7 +723,7 @@
     });
 
     acceptGift.addEventListener("click", () => {
-      if (celebrationStarted) return;
+      if (celebrationStarted) return;s
       celebrationStarted = true;
       openGiftPopup.classList.remove("show");
       stopNoEscape();
